@@ -1,0 +1,180 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('bitbond:server');
+var http = require('http');
+var path = require('path');
+var ParseServer = require('parse-server').ParseServer;
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Setup Parse Server
+ */
+var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
+
+if (!databaseUri) {
+  console.log('DATABASE_URI not specified, falling back to localhost.');
+}
+// Serve the Parse API on the /parse URL prefix
+var mountPath = process.env.PARSE_MOUNT || '/1';
+
+var serverUri;
+if (process.env.PARSE_SERVER_URI) {
+  serverUri = process.env.PARSE_SERVER_URI + process.env.PARSE_MOUNT;
+} else {
+  serverUri = 'http://localhost:'+port+mountPath;
+}
+var publicServerURL;
+if (process.env.PUB_SERVER_URL) {
+  publicServerURL = process.env.PUB_SERVER_URL + mountPath;
+} else {
+  publicServerURL = 'http://localhost:'+port+mountPath;
+}
+
+console.log(serverUri, publicServerURL);
+
+var api = new ParseServer({
+  databaseURI: databaseUri || 'mongodb://localhost:27017/bitbond',
+  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
+  appId: process.env.APP_ID || '9o87s1WOIyPgoTEGv0PSp9GXT1En9cwC',
+  masterKey: process.env.MASTER_KEY || '2h7bu8iPlLZ43Vt80rB97X2CDFmY087P', //Add your master key here. Keep it secret!
+  serverURL: serverUri,  // Don't forget to change to https if needed
+  // Enable email verification
+  appName: 'Bitbond',
+  publicServerURL: publicServerURL,
+  verifyUserEmails: true,
+  emailAdapter:{
+    module: 'parse-server-simple-mailgun-adapter',
+    options: {
+      // The address that your emails come from
+      fromAddress: 'Bitbond <noreply@'+ process.env.DOMAIN_NAME+ '>',
+      // Your domain from mailgun.com
+      domain: process.env.DOMAIN_NAME || 'http://localhost:'+port,
+      // Your API key from mailgun.com
+      apiKey: process.env.MAILGUN_API_KEY || 'key-mykey',
+    }
+  },
+  liveQuery: {
+    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  }
+});
+
+app.use(mountPath, api);
+
+
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Create Socket server.
+ */
+var io = require('socket.io').listen(server);
+var sockets = require('../routes/sockets')(io);
+
+app.use('/sockets', sockets);
+
+// rewrite virtual urls to angular app to enable refreshing of internal pages
+app.get('*', function (req, res, next) {
+    res.sendFile(path.resolve('dist/index.html'));
+});
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

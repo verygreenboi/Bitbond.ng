@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title ng-bind="pageTitle"></title>
+	<base href="/">
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+
+	<div ng-hide="stateLoading" ui-view></div>
+	<div class="page-loader" ng-show="stateLoading">
+      <div class="loader">Loading...</div>
+  </div>
+
+<!-- Scripts -->
+<script src="vendor.min.js"></script>
+</body>
+</html>
