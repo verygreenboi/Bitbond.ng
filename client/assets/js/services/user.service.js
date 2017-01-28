@@ -37,11 +37,13 @@ export default class User {
         },
         data: credentials
       }).then((res) =>{
-        return saveUser(res);
+        return this.saveUser(res);
       }).then((res) =>{
         this._Token.save(res.data.sessionToken);
         this.current = res.data
         return res;
+      }).catch((err) => {
+        console.log(err);
       });
     }
   }
@@ -54,6 +56,8 @@ export default class User {
         'X-Parse-Application-Id': this._AppConstants.appId,
         'X-Parse-Session-Token': res.data.sessionToken
       }
+    }).catch((err) => {
+      console.log(err);
     });
   }
 

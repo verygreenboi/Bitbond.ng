@@ -113,27 +113,9 @@ gulp.task('default', ['build'], function() {
   nodemon({
     // the script to run the app
     script: './bin/www'
-  }).on('restart', function(){
-    // when the app has restarted, run livereload.
+  }).on('restart',['build', function(){
     gulp.src('./bin/www')
       .pipe(livereload())
       .pipe(notify('Reloading page, please wait...'));
-  })
-})
-
-// gulp.task('default', ['html', 'browserify', 'minify-css', 'vendor'], function() {
-
-//   browserSync.init(['./build/**/**.**'], {
-//     server: "./build",
-//     port: 3000,
-//     notify: false,
-//     ui: {
-//       port: 3001
-//     }
-//   });
-
-//   gulp.watch("client/assets/index.html", ['html']);
-//   gulp.watch(viewFiles, ['views']);
-//   gulp.watch(jsFiles, ['browserify']);
-//   gulp.watch(cssFiles, ['minify-css']);
-// });
+    }]);
+});
