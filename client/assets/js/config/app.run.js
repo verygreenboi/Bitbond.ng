@@ -11,7 +11,8 @@ function AppRun(AppConstants, $rootScope, Coinbase, Token, User, $state) {
     }
     $rootScope.pageTitle += AppConstants.appName;
   };
-  $rootScope.$on('$stateChangeStart', function(e) {
+  $rootScope.$on('$stateChangeStart', function(e, toState  , toParams
+                                                   , fromState, fromParams) {
       $rootScope.stateLoading = true;
       var isLogin     = toState.name === "app.login";
       var isRegister  = toState.name === "app.register";
