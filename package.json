@@ -20,6 +20,7 @@
     "browserify": "^13.3.0",
     "browserify-ngannotate": "^2.0.0",
     "coinbase": "^2.0.6",
+    "connect-gzip-static": "^1.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.14.0",
