@@ -1,5 +1,5 @@
 export default class Coinbase {
-	constructor(Token, AppConstants, $http, $q){
+	constructor(Token, AppConstants, $http, $q, $cacheFactory){
 		'ngInject';
 
     this._Token = Token;
@@ -10,6 +10,7 @@ export default class Coinbase {
     this.currentBalance = null;
     this.exchanges = null;
     this.transactions = null;
+    this.lru = $cacheFactory('lruCache', { capacity: 10 }); 
 	}
 
 	refreshBalance(){
@@ -18,7 +19,8 @@ export default class Coinbase {
 			url: this._AppConstants.api +"/functions/getBalance",
 			headers:{
         'X-Parse-Application-Id': this._AppConstants.appId
-      }
+      },
+      cache: this.lru
 		}).then((bal) =>{
 			this.currentBalance = bal.data.result;
 			return bal;
