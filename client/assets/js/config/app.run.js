@@ -1,10 +1,6 @@
-function AppRun(AppConstants, $rootScope, Coinbase) {
+function AppRun(AppConstants, $rootScope, Coinbase, Token, User, $state) {
   'ngInject';
 
-  // change page title based on state
-  $rootScope.$on('$stateChangeSuccess', (event, toState) => {
-    $rootScope.setPageTitle(toState.title);
-  });
 
   // Helper method for setting the page's title
   $rootScope.setPageTitle = (title) => {
@@ -14,16 +10,27 @@ function AppRun(AppConstants, $rootScope, Coinbase) {
       $rootScope.pageTitle += ' \u2014 ';
     }
     $rootScope.pageTitle += AppConstants.appName;
-
-    $rootScope.$on('$stateChangeStart', function() {
-        $rootScope.stateLoading = true;
-    });
-    
-    $rootScope.$on('$stateChangeSuccess', function() {
-      $rootScope.stateLoading = false;
-    });
   };
+  $rootScope.$on('$stateChangeStart', function(e) {
+      $rootScope.stateLoading = true;
+      var isLogin     = toState.name === "app.login";
+      var isRegister  = toState.name === "app.register";
 
+      if (isLogin || isRegister) {
+        return;
+      }
+
+      if (!Token.get() || !User.current) {
+        e.preventDefault();
+        $state.go('app.login');
+      }
+  });
+
+  // change page title based on state
+  $rootScope.$on('$stateChangeSuccess', (event, toState) => {
+    $rootScope.setPageTitle(toState.title);
+    $rootScope.stateLoading = false;
+  });
 }
 
 export default AppRun;
