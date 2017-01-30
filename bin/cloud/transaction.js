@@ -32,23 +32,24 @@ Parse.Cloud.define('getAddress', (req, res) =>{
 	if(!user) {
 		return res.error('No valid user');
 	}
-	var Sell = Parse.Object.extend("Sell");
-	var sell = new Sell();
+	var Transaction = Parse.Object.extend("Transaction");
+	var transaction = new Transaction();
 	return client.getAccount(process.env.COINBASE_PRIMARY_ACC_ID).then((acc) =>{
 		return client.createAddress(acc);
 	}).then((addr) =>{
-		sell.set("user", user);
-		sell.set("address", addr);
-		return sell.save(null, {sessionToken : user.getSessionToken()});
-	}).then((sell) =>{
-		return res.success(sell);
+		transaction.set("user", user);
+		transaction.set("address", addr);
+		transaction.set("type", "sell");
+		return transaction.save(null, {sessionToken : user.getSessionToken()});
+	}).then((transaction) =>{
+		return res.success(transaction);
 	}).catch((err) =>{
 		return res.error(err);
 	});
 
 })
 
-Parse.Cloud.beforeSave('Sell', (req, res) =>{
+Parse.Cloud.beforeSave('Transaction', (req, res) =>{
 	var buy 	= req.object;
 	var acl 	= new Parse.ACL();
 
