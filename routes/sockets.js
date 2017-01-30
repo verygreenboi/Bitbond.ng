@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var _ = require('underscore');
 
 
 function returnRouter(io) {
@@ -8,18 +9,20 @@ function returnRouter(io) {
 	  res.send('respond with a resource');
 	});
 
-	var user = {
-	  		username: 'username',
-	  		name: 'thompson'
-	  	};
+	router.post('/transaction', (req, res) =>{
+		var data = req.body;
 
-	io.sockets.on('connection', (s) =>{
-		socket.on('disconnect', function () {
-	    console.log("A user has disconnected");
-	    io.emit('connect', null);
-	  });
-	  io.emit('connect', {user: user});
-	})
+		var message = {};
+
+		message.address 	= data.data.address;
+		message.amount 		= data.additional_data.amount.amount;
+		message.currency 	= data.additional_data.amount.currency;
+		message.transactionId = data.additional_data.transaction.id;
+
+		io.sockets.emit(message.address, message);
+
+		res.send('ok');
+	});
 
 	return router;
 }

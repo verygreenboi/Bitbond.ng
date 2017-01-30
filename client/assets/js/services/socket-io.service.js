@@ -1,21 +1,25 @@
-export default class SocketIO {
-	constructor(Token) {
-		'ngInject';
-		this.token = Token;
-    this.init();
-  }
-  init() {
-    let host = window.location.origin+'/sockets';
-    console.log("WEBSOCKET connecting to", host);
-
-    this.socket = io.connect(host);
-
-    this.socket.on('connect', () => {
-      let sessionId = this.socket.io.engine.id;
-
-      console.log("WEBSOCKET connected with session id", sessionId);
-
-      this.socket.emit('new_user', { sid: sessionId, uid: this.token.get() });
-    })
-  }
+function SocketFactory($rootScope){
+  var socket = io.connect();
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {  
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if (callback) {
+            callback.apply(socket, args);
+          }
+        });
+      })
+    }
+  };
 }
+
+export default SocketFactory;

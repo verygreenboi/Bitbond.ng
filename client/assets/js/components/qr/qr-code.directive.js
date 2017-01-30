@@ -12,7 +12,7 @@ function ShowQRCode() {
     		maxVersion: 40,
     		ecLevel: 'L',
     		size: 400,
-    		fill: '#5CB85C',
+    		fill: '#000',
     		text: scope.address
 			})
 		},

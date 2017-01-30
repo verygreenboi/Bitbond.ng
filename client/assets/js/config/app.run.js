@@ -16,8 +16,9 @@ function AppRun(AppConstants, $rootScope, Coinbase, Token, User, $state) {
       $rootScope.stateLoading = true;
       var isLogin     = toState.name === "app.login";
       var isRegister  = toState.name === "app.register";
+      var isHome      = toState.name === "app.home";
 
-      if (isLogin || isRegister) {
+      if (isLogin || isRegister || isHome) {
         return;
       }
 

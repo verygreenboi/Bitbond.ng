@@ -14,7 +14,7 @@ import CoinbaseService from './coinbase.service';
 servicesModule.service('Coinbase', CoinbaseService);
 
 import SocketFactory from './socket-io.service';
-servicesModule.service('SocketIO', SocketFactory);
+servicesModule.factory('SocketIO', ['$rootScope', SocketFactory]);
 
 // import ProfileService from './profile.service';
 // servicesModule.service('Profile', ProfileService);

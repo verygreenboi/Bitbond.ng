@@ -35,7 +35,8 @@ export default class Coinbase {
 			url: this._AppConstants.api +"/functions/getAddress",
 			headers:{
         'X-Parse-Application-Id': this._AppConstants.appId
-      }
+      },
+      cache: this.lru
 		}).then((addr) => {
 			return addr.data.result.address;
 		}).catch((err) =>{

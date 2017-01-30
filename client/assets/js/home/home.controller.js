@@ -1,5 +1,5 @@
 class HomeCtrl {
-  constructor(User, AppConstants, $scope) {
+  constructor(User, AppConstants, $scope, SocketIO) {
     'ngInject';
 
     this.appName = AppConstants.appName;
@@ -9,15 +9,6 @@ class HomeCtrl {
     this.listConfig = {
       type: User.current ? 'feed' : 'all'
     };
-
-    // this._socket.connect();
-    // this._socket('connect', (data) =>{
-    //   console.log(data);
-    // });
-
-    // this._$scope.$on('$locationChangeStart', (e) =>{
-    //   this._socket.disconnect();
-    // })
 
   }
 
