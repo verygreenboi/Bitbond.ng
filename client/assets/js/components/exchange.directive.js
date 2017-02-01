@@ -8,12 +8,16 @@ function ShowExchange(Coinbase) {
 	 	link: function (scope, element, attrs){
 	 		scope.Coinbase = Coinbase;
 	 		scope.exchange = 0.0000;
- 			Coinbase.refreshExchange().then((bal) =>{
- 				scope.exchange = bal;
- 			}).catch((err) =>{
- 				scope.exchange = 0.0000;
- 				console.log(err);
- 			});
+	 		if (!Coinbase.exchanges) {
+	 			Coinbase.refreshExchange().then((bal) =>{
+	 				scope.exchange = bal;
+	 			}).catch((err) =>{
+	 				scope.exchange = 0.0000;
+	 				console.log(err);
+	 			});
+	 		} else {
+	 			scope.exchange = Coinbase.exchanges;
+	 		}
 	 	}
  	}
 }

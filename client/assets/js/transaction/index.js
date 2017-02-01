@@ -14,4 +14,7 @@ transactionModule.controller('TransactionController', TransactionController);
 import SellController from './sell.controller';
 transactionModule.controller('SellController', SellController);
 
+import BuyController from './buy.controller';
+transactionModule.controller('BuyController', BuyController);
+
 export default transactionModule;

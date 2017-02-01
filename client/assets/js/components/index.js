@@ -36,4 +36,7 @@ componentsModule.component('listPagination', ListPagination);
 import ShowQRCode from './qr/qr-code.directive';
 componentsModule.directive('bbQrCode', ShowQRCode);
 
+import ShowTransactionRow from './tx-helpers/tx-helper';
+componentsModule.directive('bbTxItem', ShowTransactionRow);
+
 export default componentsModule;

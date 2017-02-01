@@ -1,8 +1,10 @@
 class TransactionController {
-	constructor (User, Coinbase) {
+	constructor (User, Coinbase, transactions) {
 		'ngInject';
 		this.user = User.current;
-		this.tx = Coinbase.getTransactions();
+		this.tx = transactions;
+
+		console.log(transactions);
 	}
 }
 

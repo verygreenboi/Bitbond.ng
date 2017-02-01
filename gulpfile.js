@@ -23,6 +23,7 @@ var vendorFiles = [
                     "client/assets/vendor/js/jquery/dist/jquery.js", 
                     "client/assets/vendor/js/qrcode.js",
                     "client/assets/vendor/js/jquery-qrcode-0.14.0/jquery-qrcode-0.14.0.js",
+                    "client/assets/vendor/js/table.js"
                   ];
 
 var interceptErrors = function(error) {

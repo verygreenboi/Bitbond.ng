@@ -67,12 +67,28 @@ export default class Coinbase {
 				'X-Parse-Application-Id': this._AppConstants.appId
 			}
 		}).then((tx) =>{
-			this.transactions = tx.data.result;
-			return tx.data.result;
+			this.transactions = tx.data.results;
+			return tx.data.results;
 		}).catch((err) =>{
 			console.log(err);
 			return this.transactions;
 		});
+	}
+
+	buy(tx){
+		return this._$http({
+			method: 'POST',
+			url: this._AppConstants.api +"/classes/Transaction",
+			headers: {
+				'X-Parse-Application-Id': this._AppConstants.appId
+			},
+			data: tx
+		})
+		.then((tx) =>{
+			this.transactions.push(tx.data);
+			return tx.data;
+		})
+		.catch((err) => console.log(err));
 	}
 
 }

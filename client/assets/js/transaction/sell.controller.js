@@ -7,7 +7,6 @@ class SellController {
 		this.socket  = SocketIO;
 
 		this.socket.on(this.address, (data) =>{
-			console.log(data);
 			$state.go('app.transaction.list');
 		});
 

@@ -1,8 +1,14 @@
 <div class="container page">
 	<div class="row">
 		<div class="col-lg-8 col-md-offset-2">
-			<bb-qr-code address="{{$ctrl.address}}"></bb-qr-code>
-			<p>{{$ctrl.address}}</p>
+			<div class="panel">
+				<div class="panel-body">
+					<bb-qr-code address="{{$ctrl.address}}"></bb-qr-code>
+				</div>
+				<div class="panel-footer">
+					<p>{{$ctrl.address}}</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

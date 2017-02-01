@@ -1,1 +1,23 @@
-<h1>Hi {{$ctrl.username}}</h1>
+<div class="container page">
+	<div class="row">
+		<div class="col-sm-12 col-md-10 offset-md-1">
+			<div class="table-responsive-vertical shadow-z-1">
+				<!-- Table starts here -->
+			  <table id="table" class="table table-hover table-mc-light-blue">
+			  	<thead>
+			      <tr>
+			        <th>ID</th>
+			        <th>Type</th>
+			        <th>Address</th>
+			        <th>Amount</th>
+			        <th>Status</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+						<tr ng-repeat="item in $ctrl.tx | orderBy: 'createdAt':true" bb-tx-item item="item" index="$index"></tr>
+			    </tbody>
+			  </table>
+			</div>	
+		</div>
+	</div>
+</div>

@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name=viewport content="width=device-width, initial-scale=1">
+	
+	<!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
 	<title ng-bind="pageTitle"></title>
 	<base href="/">
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 
+	<div ng-hide="stateLoading" ui-view></div>
+
 	<div class="page-loader" ng-show="stateLoading">
       <div class="loader">Loading...</div>
   </div>
-	<div ng-hide="stateLoading" ui-view></div>
-
-<!-- Scripts -->
-<script src="/socket.io/socket.io.js"></script>
-<script src="vendor.min.js"></script>
+	<!-- Scripts -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="vendor.min.js"></script>
 </body>
 </html>

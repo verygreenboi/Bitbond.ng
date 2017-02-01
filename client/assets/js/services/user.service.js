@@ -50,7 +50,7 @@ export default class User {
 
   saveUser(res){
     return this._$http({
-      url: this._AppConstants.api +"/users/me",
+      url: this._AppConstants.api +"/users/me?include=profile",
       method: 'GET',
       headers:{
         'X-Parse-Application-Id': this._AppConstants.appId,
@@ -94,7 +94,7 @@ export default class User {
 
     } else {
       this._$http({
-        url: this._AppConstants.api + '/users/me',
+        url: this._AppConstants.api + '/users/me?include=profile',
         method: 'GET',
         headers: {
           'X-Parse-Application-Id': this._AppConstants.appId,
