@@ -1,5 +1,5 @@
 <td data-title="ID">{{vm.index + 1}}</td>
 <td data-title="type"><span class="label label-primary">{{vm.item.type}}</span></td>
-<td data-title="Name">{{vm.item.address}}</td>
-<td><i class="fa fa-bitcoin"></i> <b>{{vm.item.amount | number: 6}}</b></td>
+<td data-title="Address">{{vm.item.address}}</td>
+<td data-title="Amount"><i class="fa fa-bitcoin"></i> <b>{{vm.item.amount | number: 6}}</b></td>
 <td data-title="Status"><span class="label" ng-class="{'label-danger':vm.item.status === 'pending'}">{{vm.item.status}}</span></td>
