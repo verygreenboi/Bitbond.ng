@@ -47,11 +47,22 @@ Parse.Cloud.define('getAddress', (req, res) =>{
 		return res.error(err);
 	});
 
-})
+});
+
+Parse.Cloud.define('updateTx', (req, res) =>{
+	var tid = req.params.tid;
+	var data = req.params.tx;
+	console.log(tid, data);
+	return res.success();
+});
 
 Parse.Cloud.beforeSave('Transaction', (req, res) =>{
 	var buy 	= req.object;
 	var acl 	= new Parse.ACL();
+
+	if (buy.existed()) {
+		return res.success();
+	}
 
 	acl.setReadAccess(req.user.id, true);
 	acl.setRoleReadAccess("admin", true);
@@ -59,6 +70,5 @@ Parse.Cloud.beforeSave('Transaction', (req, res) =>{
 
 	buy.setACL(acl);
 
-	res.success();
+	return res.success();
 });
-
