@@ -31,7 +31,8 @@ function UpdateSellTransaction(id, data) {
     }, 
     json: {
     	"amount": data.amount * 1,
-    	"txId": data.transactionId
+    	"txId": data.transactionId,
+    	"status": "pending"
     }
 	};
 	return r.put(options);
